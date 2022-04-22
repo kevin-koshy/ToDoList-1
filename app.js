@@ -1,10 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 
-const app = express();
+const app =  express();
 app.use(bodyParser.urlencoded({extended:true}));
 
 app.set("view engine", "ejs");
+
+var items =["Buy Food", "Cook Food", "Eat Food"];
 
 app.listen(3000, function(){
     console.log("Server started on port 3000");
@@ -14,39 +16,19 @@ app.get("/", function(req, res){
 
     var today = new Date();
     var currentDay =today.getDay();
-    var day = "";
+    var options = {
+        weekday:"long",
+        day:"numeric",
+        month:"long"
+    };
 
-    // if (currentDay ===6 || currentDay===0){
-    //     day = "weekend";
-    // }
-    // else{
-    //     day ="weekday";
-    // }
+    var day = today.toLocaleDateString("en-US", options);
+    res.render("list",{kindOfDay:day, newListItems:items});
 
-    switch (currentDay)
-    {
-        case 0:
-            day="Sunday";
-            break;
-        case 1:
-            day="Monday";
-            break;
-        case 2:
-            day="Tuesday";
-            break;
-        case 3:
-            day="Wednesday";
-            break;
-        case 4:
-            day="Thursday";
-            break;
-        case 5:
-            day="Friday";
-            break;
-        case 6:
-            day="Saturday";
-            break;
-    }
-
-        res.render("list",{kindOfDay:day});
 });
+
+app.post("/", function(req, res){
+    var item = req.body.newItem;
+    items.push(item);
+    res.redirect("/");
+})
