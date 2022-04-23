@@ -8,7 +8,7 @@ app.use(express.static("public"))
 
 app.set("view engine", "ejs");
 
-let items =["Buy Food", "Cook Food", "Eat Food"];
+const items =["Buy Food", "Cook Food", "Eat Food"];
 let workItems = [];
 
 app.listen(3000, function(){
@@ -17,7 +17,7 @@ app.listen(3000, function(){
 
 app.get("/", function(req, res){
 
-    let day = date();
+    const day = date.getDate();
     res.render("list",{listTitle:day, newListItems:items});
 
 });
